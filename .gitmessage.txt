@@ -2,6 +2,8 @@ tipo: asunto
 
 cuerpo
 
+footer
+
 ### tipo
 # feat (nueva funcionalidad)
 # fix (corrección de bugs)
@@ -18,5 +20,5 @@ cuerpo
 ### cuerpo (opcional)
 # Se utilizará en caso de que el asunto no sea suficientemente descriptivo.
 
-### Ejemplo
-# conf : Actualizado docker-compose.yml #1
+### footer (opcional)
+# Breaking changes o issues a los que afecta.

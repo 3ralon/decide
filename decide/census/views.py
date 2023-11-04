@@ -7,11 +7,24 @@ from rest_framework.status import (
         HTTP_204_NO_CONTENT as ST_204,
         HTTP_400_BAD_REQUEST as ST_400,
         HTTP_401_UNAUTHORIZED as ST_401,
-        HTTP_409_CONFLICT as ST_409
-)
-
+        HTTP_409_CONFLICT as ST_409)
+from .models import Profile
+import csv
 from base.perms import UserIsStaff
 from .models import Census
+from django.http import HttpResponse
+
+
+def export_to_csv(request):
+    profiles = Profile.objects.all()
+    response = HttpResponse('text/csv')
+    response['Content-Disposition'] = 'attachment; filename="censo.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Voting','Voter'])
+    profile_fields = profiles.values_list('voting_id', 'voter_id')
+    for profile in profile_fields:
+        writer.writerow(profile)
+    return response
 
 
 class CensusCreate(generics.ListCreateAPIView):

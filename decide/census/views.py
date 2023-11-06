@@ -13,6 +13,7 @@ from base.perms import UserIsStaff
 from .models import Census
 from django.http import HttpResponse
 
+from django.shortcuts import render
 
 def export_to_csv(request):
     census = Census.objects.all()
@@ -25,7 +26,8 @@ def export_to_csv(request):
     for profile in profile_fields:
         writer.writerow(profile)
     return response
-
+def export_page(request):
+    return render(request, 'export_csv.html')
 class CensusCreate(generics.ListCreateAPIView):
     permission_classes = (UserIsStaff,)
 

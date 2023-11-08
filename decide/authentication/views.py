@@ -48,27 +48,29 @@ class RegisterView(APIView):
             if form.is_valid():
                 user = form.save()
                 token, _ = Token.objects.get_or_create(user=user)
-                return Response({'user_pk': user.pk, 'token': token.key}, HTTP_201_CREATED)
+                return Response({'user_pk': user.pk, 'token': token.key}, status=HTTP_201_CREATED)
             else:
                 return Response(form.errors, status=HTTP_400_BAD_REQUEST)
 
         # Si es un superusuario, manejar el registro del administrador
         username = request.data.get('username', '')
         pwd = request.data.get('password', '')
+
         if not username or not pwd:
             return Response({}, status=HTTP_400_BAD_REQUEST)
 
         try:
-            user = User(username=username)
-            user.set_password(pwd)
-            user.is_staff = True  # Opcional: Marcar al usuario como miembro del staff
-            user.save()
-            token, _ = Token.objects.get_or_create(user=user)
+            user, created = User.objects.get_or_create(username=username)
+            if created:
+                user.set_password(pwd)
+                user.save()
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({'user_pk': user.pk, 'token': token.key}, status=HTTP_201_CREATED)
+            else:
+                return Response({'error': 'User already exists'}, status=HTTP_400_BAD_REQUEST)
+        
         except IntegrityError:
             return Response({}, status=HTTP_400_BAD_REQUEST)
-
-        return Response({'user_pk': user.pk, 'token': token.key}, HTTP_201_CREATED)
-
 
     def get(self, request):
         form = UserCreationForm()

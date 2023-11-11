@@ -16,15 +16,6 @@ class Question(models.Model):
         MULTIPLE_CHOICE = 'MULTIPLE_CHOICE', 'Multiple Choice'
 
     question_type = models.CharField(max_length=20, choices=QuestionType.choices, default=QuestionType.DEFAULT)
-
-    # question creation
-    def create_options(self, question_options = []):
-        if self.question_type == 'DEFAULT':
-            print('ESTA ES UNA DEFAULT')
-        elif self.question_type == 'YESNO':
-            print('ESTA ES UNA YESNO')
-        else:
-            print('ESTA ES UNA MULTIPLE_CHOICE')
                         
     def __str__(self):
         return self.desc

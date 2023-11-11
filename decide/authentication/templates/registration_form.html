@@ -1,12 +1,84 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: rgb(208,232,242);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            gap: 10px;
+            justify-content: center; 
+            align-items: center; 
+            margin-top: 150px; 
+            margin-left: 80px; 
+            
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            color: #fff;
+            background-color: #297ad1;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .top-right {
+        font-family:'Franklin Gothic Medium';
+        position: absolute;
+        top: 30px;
+        right: 35px;
+        font-size: 35px;
+        color:midnightblue;
+        }
+        .form-container {
+            width: 450px;
+            height: 500px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #register-title {
+            font-family:'Franklin Gothic Medium';
+            color:midnightblue; 
+            font-size: 24px; 
+            text-align: center;
+            margin-top: 30px;        }
 
-{% block title %}Registration{% endblock %}
-
-{% block content %}
-    <form method="POST" class="form-group" action="{% url 'register' %}">
+    </style>
+</head>
+<body>
+    <div class="top-right">DECIDE</div>
+    <div class="form-container">
+    <div class="register-container">
+        <h2 id="register-title">Register</h2>
+        </div>
+     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
-        <input type="hidden" name="token" value="{{token}}">
-        {{form}}
-        <button type="submit" class="btn btn-primary">Register</button>
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Nombre de usuario" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Registrarse</button>
     </form>
-{% endblock %}
+    
+</body>
+</html>

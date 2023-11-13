@@ -208,3 +208,42 @@ class VotingTestCase(BaseTestCase):
         response = self.client.put('/voting/{}/'.format(voting.pk), data, format='json')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), 'Voting already tallied')
+        
+class QuestionTestCase(BaseTestCase):
+    
+    def setUp(self):
+        super().setUp()
+
+    def tearDown(self):
+        super().tearDown()
+        
+    def test_create_question(self):
+        q = Question(desc='test question')
+        q.save()
+        self.assertEqual(q.desc, 'test question')
+        self.assertEqual(q.question_type, 'DEFAULT')
+        self.assertEqual(q.options.count(), 0)
+        
+    def test_create_question_yesno_from_api(self):
+        data = {'desc': 'test question', 'question_type': 'YESNO'}
+        response = self.client.post('/voting/question/', data, format='json')
+        self.assertEqual(response.status_code, 401)
+        
+        # login with user no admin
+        self.login(user='noadmin')
+        response = self.client.post('/voting/question/', data, format='json')
+        self.assertEqual(response.status_code, 403)
+        
+        # login with user admin
+        self.login()
+        response = self.client.post('/voting/question/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+        
+        data = {
+            'desc': 'Description example',
+            'question_type': 'YESNO',
+            'options': []
+        }
+
+        response = self.client.post('/voting/question/', data, format='json')
+        self.assertEqual(response.status_code, 201)

@@ -9,4 +9,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view()),
     path('getuser/', GetUserView.as_view()),
     path('register/', RegisterView.as_view(), name='register'),
+    path('login/', RegisterView.handle_google_login, name='login'),
 ]
